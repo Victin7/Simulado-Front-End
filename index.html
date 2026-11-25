@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulados de Front-end</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Mesmo estilo do Simulado-Dados: coluna única estreita, abas por nível, questões com correção na hora. */
+:root{
+  --bg:#F3F5F7; --surface:#FFFFFF; --fg:#16222B; --muted:#5B6B77; --line:#D8DFE5;
+  --accent:#0B6E78; --accent-soft:#DDF0F1; --ok:#1B7F4B; --ok-soft:#DFF3E7; --bad:#B3261E; --bad-soft:#FBE4E2;
+  --code-bg:#EAEFF2;
+  --f-display:'Space Grotesk','Inter',system-ui,sans-serif; --f-body:'Inter',system-ui,sans-serif; --f-mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F171D; --surface:#17222A; --fg:#E7EEF2; --muted:#9AAAB5; --line:#2A3a45;
+  --accent:#4FC3CE; --accent-soft:#12363B; --ok:#5FD08F; --ok-soft:#14301F; --bad:#FF8A80; --bad-soft:#3A1B19; --code-bg:#0F171D; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F171D; --surface:#17222A; --fg:#E7EEF2; --muted:#9AAAB5; --line:#2A3a45;
+  --accent:#4FC3CE; --accent-soft:#12363B; --ok:#5FD08F; --ok-soft:#14301F; --bad:#FF8A80; --bad-soft:#3A1B19; --code-bg:#0F171D; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 var(--f-body);padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));margin:0}
+main{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0}
+h1{font-size:clamp(1.7rem,5vw,2.3rem);line-height:1.15}
+.sub{color:var(--muted);margin:8px 0 0;max-width:60ch}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tab{font:500 .95rem var(--f-body);color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px;cursor:pointer;text-align:left}
+.tab small{display:block;color:var(--muted);font-weight:400;font-size:.78rem}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tab[aria-selected="true"] small{color:#e5f6f7}
+:root[data-theme="dark"] .tab[aria-selected="true"]{color:#06262a}
+:root[data-theme="dark"] .tab[aria-selected="true"] small{color:#0a3d43}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tab[aria-selected="true"]{color:#06262a}:root:not([data-theme="light"]) .tab[aria-selected="true"] small{color:#0a3d43}}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 16px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.score{font-family:var(--f-display);font-weight:700;font-variant-numeric:tabular-nums}
+.btn{font:500 .9rem var(--f-body);color:var(--accent);background:transparent;border:1px solid var(--accent);border-radius:8px;padding:8px 12px;cursor:pointer}
+.btn:hover{background:var(--accent-soft)}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.n{font:600 .8rem var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.q p{margin:0}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{font:inherit;text-align:left;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;cursor:pointer;display:flex;gap:10px;min-width:0}
+.opt .l{font-weight:600;color:var(--muted);flex:none;width:1.2em}
+.opt .t{min-width:0;overflow-wrap:anywhere}
+.opt:hover:not([disabled]){border-color:var(--accent)}
+.opt[disabled]{cursor:default}
+.opt.ok{background:var(--ok-soft);border-color:var(--ok)}
+.opt.bad{background:var(--bad-soft);border-color:var(--bad)}
+.fb{font-size:.92rem;border-left:3px solid var(--accent);padding:2px 0 2px 12px;color:var(--fg)}
+.fb b{font-weight:600}
+pre,code{font-family:var(--f-mono);font-size:.85rem}
+:not(pre)>code{background:var(--code-bg);border-radius:4px;padding:1px 4px}
+pre{background:var(--code-bg);border:1px solid var(--line);border-radius:8px;padding:12px;margin:0;overflow-x:auto;white-space:pre}
+.dis{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.dis p{margin:0}
+textarea{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;width:100%;resize:vertical;min-height:8em}
+textarea:focus-visible{border-color:var(--accent)}
+.ans{display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--line);padding-top:12px}
+.ans .hint{margin:0;color:var(--muted);font-size:.9rem}
+.chk{display:flex;flex-direction:column;gap:8px}
+.chk label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;min-width:0}
+.chk input{margin-top:.35em;flex:none;accent-color:var(--accent);width:1.1em;height:1.1em}
+.chk span{min-width:0;overflow-wrap:anywhere}
+.ans .res{margin:0;font-family:var(--f-display);font-weight:700;color:var(--accent)}
+h2.sec{font-size:1.2rem;margin-top:8px}
+.foot{color:var(--muted);font-size:.85rem}
+@media (prefers-reduced-motion:no-preference){.opt{transition:border-color .15s,background .15s}}
+</style>
+</head>
+<body>
+
+<main>
+  <header>
+    <h1>Simulados de Desenvolvimento Front-end</h1>
+    <p class="sub">Três simulados por nível de dificuldade para revisar a matéria: 8 questões objetivas com resposta na hora e 2 dissertativas em cada um, que você escreve e depois confere com os pontos esperados. As alternativas mudam de ordem a cada tentativa.</p>
+  </header>
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <div class="bar"><span class="score" id="score" aria-live="polite"></span><button class="btn" id="redo" type="button">Refazer simulado</button></div>
+  <section id="objetivas" style="display:flex;flex-direction:column;gap:16px"></section>
+  <h2 class="sec">Questões dissertativas</h2>
+  <section id="diss" style="display:flex;flex-direction:column;gap:16px"></section>
+  <p class="foot">Os exemplos usam o site de uma ONG de proteção animal, como no projeto integrador. Cobrem as quatro unidades: HTML e fundamentos da Web, CSS e Flexbox, JavaScript e DOM, Git e deploy. O gabarito das dissertativas traz os pontos que a resposta precisa ter, não um texto para decorar.</p>
+</main>
+
+<script>
+{
+/* Em cada questão objetiva, a alternativa correta é a primeira (c:0); a ordem é embaralhada na tela.
+   Texto entre crases vira código. "cd" é um trecho de código mostrado abaixo do enunciado. */
+const SIMS = {
+  facil: {
+    nome: "Fácil", desc: "Conceitos de base",
+    obj: [
+      {q:"No formulário de voluntários da ONG, clicar no texto \"Nome completo\" deve levar o cursor ao campo, e o leitor de tela deve anunciar esse rótulo. Qual atributo completa a lacuna?",
+       cd:'<label ______="nome">Nome completo</label>\n<input type="text" id="nome" name="nome">',
+       o:["`for`, com o mesmo valor do `id` do campo","`name`, com o mesmo valor do `name` do campo","`class`, com o mesmo valor do `id` do campo","`value`, com o texto que deve aparecer dentro do campo","`type`, indicando que o rótulo é de um campo de texto"], c:0,
+       e:"O `for` do `<label>` aponta para o `id` do campo. Clicar no rótulo foca o campo, e as tecnologias assistivas leem o rótulo junto com ele."},
+      {q:"Qual elemento deve envolver o conteúdo principal e único da página, sem incluir o cabeçalho, o menu e o rodapé?",
+       o:["`<main>`","`<section>`","`<div id=\"principal\">`","`<body>`","`<article>`"], c:0,
+       e:"`<main>` marca o conteúdo central e aparece uma vez por página. `<section>` agrupa um tema, `<article>` é um conteúdo independente, `<body>` engloba tudo e `<div>` não tem significado semântico."},
+      {q:"Uma imagem mostra um cachorro disponível para adoção. Qual prática atende à acessibilidade?",
+       o:["Usar um `alt` descritivo, como `alt=\"Cachorro caramelo de porte médio disponível para adoção\"`","Usar `title` no lugar de `alt`, porque os leitores de tela leem `title` primeiro","Deixar `alt=\"\"` em todas as imagens para não poluir a leitura","Escrever `alt=\"imagem\"` para avisar que ali existe uma imagem","Colocar a foto como `background-image` no CSS para que o leitor de tela a encontre"], c:0,
+       e:"O `alt` descreve a imagem para quem não a vê. `alt=\"\"` só serve para imagens decorativas, e imagens de fundo no CSS não são lidas pelos leitores de tela."},
+      {q:"O que esse CSS faz?",
+       cd:'.btn-doar:hover {\n  background-color: #2e7d32;\n}\n\n.titulo::before {\n  content: "» ";\n}',
+       o:["`:hover` deixa o fundo verde enquanto o mouse está sobre o botão; `::before` insere \"» \" antes do conteúdo de `.titulo`","`:hover` deixa o fundo verde de forma permanente após o primeiro clique; `::before` cria um novo elemento no HTML","Os dois são pseudo-elementos e criam partes que não existem no HTML","`::before` só funciona em imagens, e `content` define o texto alternativo","`:hover` só funciona em links `<a>`, então o botão não muda"], c:0,
+       e:"`:hover` é uma pseudo-classe (um estado do elemento). `::before` é um pseudo-elemento: gera conteúdo visual antes do conteúdo do elemento, sem alterar o HTML."},
+      {q:"Do centro para fora, qual é a ordem das camadas do Box Model?",
+       o:["Conteúdo, padding, border, margin","Conteúdo, margin, border, padding","Padding, conteúdo, border, margin","Conteúdo, border, padding, margin","Margin, padding, border, conteúdo"], c:0,
+       e:"O padding é o espaço interno entre o conteúdo e a borda. A margin é o espaço externo, fora da borda, que afasta o elemento dos vizinhos."},
+      {q:"A página tem três cards com a classe `card`. O que acontece ao executar o script?",
+       cd:'const card = document.querySelector(".card");\ncard.textContent = "Adotado!";',
+       o:["Só o primeiro elemento com a classe `card` passa a exibir \"Adotado!\"","Os três cards passam a exibir \"Adotado!\"","Só o último card é alterado","Ocorre um erro, porque há mais de um elemento com a classe","Nada muda, porque `querySelector` só aceita IDs"], c:0,
+       e:"`querySelector` devolve o primeiro elemento que combina com o seletor. Para pegar todos, usa-se `querySelectorAll` e um laço."},
+      {q:"Qual código lê o que o usuário digitou em `<input id=\"email\">`?",
+       o:["`document.getElementById(\"email\").value`","`document.getElementById(\"email\").textContent`","`document.getElementById(\"#email\").value`","`document.querySelector(\"email\").value`","`document.getElementById(\"email\").innerHTML`"], c:0,
+       e:"Campos de formulário guardam o que foi digitado em `value`. `getElementById` recebe o id sem `#`; `querySelector` precisa do `#` para buscar por id."},
+      {q:"Uma nova integrante entra na equipe. O repositório já existe no GitHub. Qual comando cria uma cópia local completa do projeto?",
+       o:["`git clone <url-do-repositório>`","`git init`","`git commit -m \"cópia\"`","`git push origin main`","`git branch nova-integrante`"], c:0,
+       e:"`git clone` baixa o repositório com todo o histórico e já configura o remoto `origin`. `git init` cria um repositório novo e vazio."}
+    ],
+    dis: [
+      {q:"Explique como funciona a comunicação entre cliente e servidor na Web e qual é a diferença entre HTTP e HTTPS.",
+       a:["<b>Cliente:</b> o navegador, que envia requisições pedindo páginas e arquivos.","<b>Servidor:</b> recebe a requisição, processa e devolve uma resposta (HTML, CSS, JS, imagens) com um código de status, como 200 ou 404.","<b>HTTP:</b> protocolo que define essa troca de mensagens; os dados trafegam sem criptografia.","<b>HTTPS:</b> HTTP sobre TLS: criptografa os dados e autentica o servidor por um certificado digital.","<b>Exemplo:</b> o formulário de doação da ONG precisa de HTTPS, porque envia dados pessoais."]},
+      {q:"O que é HTML semântico e por que ele é importante? Cite quatro tags semânticas e diga onde usaria cada uma no site da ONG.",
+       a:["<b>Conceito:</b> usar tags que descrevem o significado do conteúdo, e não só a aparência.","<b>Importância:</b> melhora a acessibilidade (leitores de tela), o SEO e a manutenção do código.","<b>Tags:</b> pelo menos quatro, como <code>&lt;header&gt;</code> (logo e menu), <code>&lt;nav&gt;</code> (links de navegação), <code>&lt;main&gt;</code> (conteúdo principal), <code>&lt;section&gt;</code> ou <code>&lt;article&gt;</code> (seções e notícias) e <code>&lt;footer&gt;</code> (contato e redes).","<b>Contraste:</b> uma <code>&lt;div&gt;</code> não tem significado; serve só para agrupar e estilizar."]}
+    ]
+  },
+  intermediario: {
+    nome: "Intermediário", desc: "Interpretação de código",
+    obj: [
+      {q:"As etiquetas de categoria deveriam ter tamanho fixo e ficar na mesma linha do texto, mas `width` e `height` não têm efeito. Qual é a causa e a correção?",
+       cd:'<p>Categorias: <span class="tag">Cão</span> <span class="tag">Gato</span></p>\n\n.tag {\n  width: 120px;\n  height: 40px;\n  padding: 8px;\n  background: #eeeeee;\n}',
+       o:["`<span>` é inline, e elementos inline ignoram `width` e `height`; `display: inline-block` aceita dimensões e mantém a mesma linha","`<span>` não aceita `background`; é preciso trocar por `<div>`","O `width` precisa estar em porcentagem","Falta `box-sizing: border-box`, sem o qual as dimensões não são aplicadas","O `padding` sobrescreve as dimensões; é preciso usar `!important`"], c:0,
+       e:"Elementos inline ocupam só o espaço do conteúdo. `inline-block` mantém o fluxo em linha e passa a respeitar `width`, `height` e o padding vertical. `display: block` também aceitaria dimensões, mas quebraria a linha."},
+      {q:"O que o `<span id=\"total\">` exibe depois de um clique no botão?",
+       cd:'<input type="number" id="qtd" value="3">\n<button id="mais">+</button>\n<span id="total">3</span>\n\nconst qtd = document.getElementById("qtd");\nconst total = document.getElementById("total");\n\ndocument.getElementById("mais").addEventListener("click", () => {\n  const novo = qtd.value + 1;\n  total.textContent = novo;\n});',
+       o:["`31`","`4`","`NaN`","`3`","Nada, porque ocorre um erro ao atribuir um número a `textContent`"], c:0,
+       e:"`value` sempre devolve texto, mesmo em `type=\"number\"`. \"3\" + 1 concatena e vira \"31\". A correção é converter antes: `Number(qtd.value) + 1`."},
+      {q:"Um usuário acessa `https://pataamiga.org/adote` e recebe a mensagem \"404 Not Found\". O que aconteceu?",
+       o:["O navegador enviou uma requisição HTTP ao servidor, que respondeu com o status 404: recurso não encontrado","O navegador tem um erro e precisa limpar o cache","O servidor está fora do ar e não recebeu a requisição","O servidor enviou uma requisição ao navegador, que a recusou","O certificado HTTPS falhou e a conexão foi bloqueada"], c:0,
+       e:"Se houve código 404, o servidor estava no ar e respondeu: o endereço pedido não existe. Servidor fora do ar não responde; certificados inválidos geram aviso de segurança no navegador."},
+      {q:"Como os itens filhos ficam posicionados?",
+       cd:'.container {\n  display: flex;\n  height: 300px;\n  justify-content: center;\n  align-items: flex-end;\n}',
+       o:["Centralizados na horizontal e alinhados na parte de baixo do container","Centralizados na vertical e alinhados à direita","Empilhados na vertical, no centro","Centralizados nos dois eixos","À esquerda e embaixo, porque `justify-content` só funciona em coluna"], c:0,
+       e:"Com `flex-direction: row` (padrão), o eixo principal é horizontal: `justify-content` centraliza na horizontal. `align-items` age no eixo transversal (vertical), e `flex-end` leva os itens para baixo."},
+      {q:"Qual é a largura do card da borda esquerda à borda direita (1) sem `box-sizing` definido e (2) com `box-sizing: border-box`?",
+       cd:'.card {\n  width: 250px;\n  padding: 15px;\n  border: 2px solid #333;\n  margin: 10px;\n}',
+       o:["(1) 284px e (2) 250px","(1) 250px e (2) 250px","(1) 284px e (2) 216px","(1) 304px e (2) 284px","(1) 267px e (2) 250px"], c:0,
+       e:"No `content-box` (padrão), o `width` vale só para o conteúdo: 250 + 15 + 15 + 2 + 2 = 284px. No `border-box`, padding e borda ficam dentro dos 250px. A margin fica fora da borda e não entra na conta."},
+      {q:"Quais são as saídas, na ordem?",
+       cd:'function situacao(idade, autorizado) {\n  if (idade >= 18 || autorizado) {\n    return "Pode se voluntariar";\n  } else if (idade >= 16) {\n    return "Precisa de autorização";\n  } else {\n    return "Não pode";\n  }\n}\n\nconsole.log(situacao(17, false));\nconsole.log(situacao(15, true));\nconsole.log(situacao(14, false));',
+       o:["Precisa de autorização; Pode se voluntariar; Não pode","Não pode; Pode se voluntariar; Não pode","Precisa de autorização; Precisa de autorização; Não pode","Pode se voluntariar; Pode se voluntariar; Não pode","Precisa de autorização; Não pode; Não pode"], c:0,
+       e:"(17, false): o `||` é falso, mas 17 >= 16. (15, true): `autorizado` é verdadeiro, então o `||` é verdadeiro. (14, false): nenhuma condição vale e cai no `else`."},
+      {q:"Qual é a situação do repositório após o último comando?",
+       cd:'git checkout -b feature/formulario\n# ... edições no script.js ...\ngit add .\ngit commit -m "Adiciona validação do formulário"\ngit checkout main',
+       o:["O commit existe só na branch `feature/formulario`; a `main` fica sem a validação até um merge","O commit foi apagado ao trocar de branch","`git checkout main` mesclou a branch automaticamente","`git checkout -b` criou um repositório independente","O commit já está no GitHub, porque `commit` envia ao remoto"], c:0,
+       e:"Cada branch tem sua linha de commits. Para levar a validação à `main`, faz-se `git merge feature/formulario` estando na `main`. Para chegar ao GitHub, ainda é preciso `git push`."},
+      {q:"O usuário digita `ana.com` no e-mail, `16` na idade e clica em Enviar. O que acontece?",
+       cd:'<form action="/cadastro" method="post">\n  <input type="email" name="email" required>\n  <input type="number" name="idade" min="18" max="99">\n  <button type="submit">Enviar</button>\n</form>',
+       o:["O navegador bloqueia o envio: o e-mail não tem formato válido e a idade está abaixo do mínimo","O formulário é enviado, porque a validação HTML só acontece no servidor","O formulário é enviado, porque sem `required` o `min` não é verificado","O envio é bloqueado só pela idade, porque `type=\"email\"` muda apenas o teclado do celular","O formulário é enviado por GET, porque `post` exige JavaScript"], c:0,
+       e:"A validação nativa do HTML5 checa o formato de `type=\"email\"` e, quando o campo está preenchido, também `min` e `max`. Ela não substitui a validação no servidor, mas bloqueia o envio no navegador."}
+    ],
+    dis: [
+      {q:"O cabeçalho da ONG tem um <code>&lt;header class=\"topo\"&gt;</code> com um logo e um <code>&lt;nav&gt;</code>. (a) Explique a diferença entre <code>justify-content</code> e <code>align-items</code> e o que muda com <code>flex-direction: column</code>. (b) Escreva o CSS de <code>.topo</code>: em telas grandes, logo à esquerda e menu à direita, centralizados na vertical; até 600px, logo acima do menu, centralizados na horizontal, com 12px de espaço.",
+       html:true,
+       a:["<b>justify-content:</b> alinha e distribui os itens no eixo principal.","<b>align-items:</b> alinha os itens no eixo transversal.","<b>Em coluna:</b> os eixos se invertem; <code>justify-content</code> passa a agir na vertical e <code>align-items</code> na horizontal.","<b>Telas grandes:</b> <code>display: flex</code>, <code>justify-content: space-between</code> e <code>align-items: center</code>.","<b>Até 600px:</b> media query com <code>flex-direction: column</code>, <code>align-items: center</code> e <code>gap: 12px</code>.",
+          "<pre>.topo {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n@media (max-width: 600px) {\n  .topo {\n    flex-direction: column;\n    align-items: center;\n    gap: 12px;\n  }\n}</pre>"]},
+      {q:"No formulário de doação, explique o papel de <code>addEventListener</code>, <code>preventDefault()</code>, <code>value</code> e <code>textContent</code>. Depois escreva o JavaScript que, ao enviar, mostra \"Obrigado, NOME!\" em <code>&lt;p id=\"msg\"&gt;</code> sem recarregar a página (o campo é <code>&lt;input id=\"nome\"&gt;</code> e o formulário, <code>&lt;form id=\"doacao\"&gt;</code>).",
+       html:true,
+       a:["<b>addEventListener:</b> associa uma função a um evento do elemento, aqui o <code>submit</code> do formulário.","<b>preventDefault():</b> cancela o comportamento padrão do evento, que seria enviar e recarregar a página.","<b>value:</b> lê o que foi digitado no campo.","<b>textContent:</b> escreve texto dentro do elemento, sem interpretar HTML.","<b>Código:</b> escuta o <code>submit</code> (não o clique no botão), chama <code>preventDefault</code> e monta a mensagem com o nome.",
+          "<pre>const form = document.getElementById(\"doacao\");\nconst msg = document.getElementById(\"msg\");\n\nform.addEventListener(\"submit\", (event) => {\n  event.preventDefault();\n  const nome = document.getElementById(\"nome\").value.trim();\n  msg.textContent = \"Obrigado, \" + nome + \"!\";\n});</pre>"]}
+    ]
+  },
+  dificil: {
+    nome: "Difícil", desc: "Análise e aplicação",
+    obj: [
+      {q:"Sem padding, border, margin ou gap, qual é a largura final de `.a`, `.b` e `.c`?",
+       cd:'.container { display: flex; width: 800px; }\n.a { flex: 1 1 100px; }\n.b { flex: 3 1 100px; }\n.c { flex: 0 0 200px; }',
+       o:["200px, 400px e 200px","266px, 266px e 266px","100px, 300px e 400px","200px, 300px e 300px","300px, 300px e 200px"], c:0,
+       e:"As bases somam 400px, sobrando 400px. O espaço livre é dividido pelo `flex-grow` (1 + 3 = 4 partes de 100px): `.a` ganha 100 (200px), `.b` ganha 300 (400px), e `.c`, com grow 0, fica em 200px."},
+      {q:"Quantos cards aparecem por linha numa janela de 900px?",
+       cd:'.cards { display: flex; flex-wrap: wrap; gap: 16px; }\n.card  { flex: 1 1 100%; }\n\n@media (min-width: 768px) {\n  .card { flex-basis: calc(50% - 8px); }\n}\n@media (min-width: 1024px) {\n  .card { flex-basis: calc(33.333% - 11px); }\n}',
+       o:["2, porque só a media query de `min-width: 768px` é atendida","1, porque a regra fora das media queries sempre prevalece","3, porque a última media query sempre sobrescreve as anteriores","Todos numa linha só, porque `flex-wrap` só age abaixo de 768px","4, porque o `gap` reduz o tamanho de cada card"], c:0,
+       e:"É CSS mobile-first: a base é 1 por linha, e cada `min-width` vale da largura indicada para cima. Em 900px vale a de 768px (2 por linha), mas não a de 1024px. O `- 8px` compensa o gap de 16px entre os dois cards."},
+      {q:"Considere o script e as afirmativas. Está correto o que se afirma em:",
+       cd:'form.addEventListener("submit", (e) => {\n  const nome = form.querySelector("#nome").value.trim();\n  const idade = Number(form.querySelector("#idade").value);\n  if (nome.length < 3 || idade < 18) {\n    e.preventDefault();\n    erro.textContent = "Dados inválidos";\n  }\n});\n\n// I.   Com nome "Jo" e idade 30, o envio é bloqueado e a mensagem aparece.\n// II.  Com nome "Joana" e idade vazia, o formulário é enviado,\n//      porque Number("") resulta em NaN.\n// III. Com dados válidos, preventDefault não é chamado e o envio segue normal.\n// IV.  preventDefault só funciona se for a primeira linha da função.',
+       o:["I e III, apenas","I, apenas","I e II, apenas","II e IV, apenas","III e IV, apenas"], c:0,
+       e:"I: \"Jo\" tem 2 letras, então o `if` é verdadeiro. II é falsa: `Number(\"\")` vale 0, e 0 < 18 bloqueia o envio. III: sem entrar no `if`, nada cancela o envio. IV é falsa: `preventDefault` pode ser chamado em qualquer ponto do tratamento do evento."},
+      {q:"Qual é a saída no console?",
+       cd:'const tarefas = ["Ração", "Vacina"];\nlocalStorage.setItem("tarefas", tarefas);\n\nconst recuperado = localStorage.getItem("tarefas");\nconsole.log(recuperado, typeof recuperado);',
+       o:["`Ração,Vacina string`","`[\"Ração\", \"Vacina\"] object`","`[\"Ração\", \"Vacina\"] string`","`undefined undefined`","Um erro, porque o `localStorage` não aceita arrays"], c:0,
+       e:"O `localStorage` só guarda strings, então o array é convertido para \"Ração,Vacina\". Para manter a estrutura, use `JSON.stringify` ao salvar e `JSON.parse` ao ler."},
+      {q:"O HTML tem `<button class=\"btn-adotar\">Quero adotar</button>`. O console mostra `TypeError: Cannot read properties of null (reading 'addEventListener')`. Qual é a causa?",
+       cd:'const botao = document.querySelector("btn-adotar");\n\nbotao.addEventListener("click", function () {\n  alert("Obrigado pelo interesse!");\n});',
+       o:["`querySelector(\"btn-adotar\")` procura uma tag `<btn-adotar>`; faltou o ponto (`\".btn-adotar\"`), então o retorno é `null`","`addEventListener` deveria ser `onclick`","A função precisa ser uma arrow function","`querySelector` só aceita IDs; o certo seria `getElementById(\"btn-adotar\")`","`alert` não pode ser usado dentro de eventos"], c:0,
+       e:"`querySelector` usa seletores CSS: sem ponto, procura um elemento por nome de tag. Como nada é encontrado, `botao` é `null`, e chamar um método em `null` gera o erro. `getElementById` também falharia, porque o botão não tem id."},
+      {q:"Avalie as afirmativas sobre o trecho. Está correto o que se afirma em:",
+       cd:'<a href="#contato">Fale conosco</a>\n<a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer">WhatsApp</a>\n<a href="doacao.html">Doe agora</a>\n...\n<section id="contato">...</section>\n\n<!--\nI.   O 1º link leva ao elemento com id="contato" na mesma página.\nII.  O 2º abre em nova aba, e rel="noopener" impede que a nova página\n     manipule a original por window.opener.\nIII. O 3º usa caminho relativo, resolvido a partir do documento atual.\nIV.  Duas seções com id="contato" seriam válidas, pois o id pode\n     se repetir em seções diferentes.\n-->',
+       o:["I, II e III, apenas","I, apenas","I e II, apenas","II e IV, apenas","I, II, III e IV"], c:0,
+       e:"IV é falsa: o `id` deve ser único no documento inteiro; repetir quebra âncoras, `getElementById` e a associação de `<label>`. As outras três descrevem corretamente âncora, nova aba segura e caminho relativo."},
+      {q:"Depois de um `git merge feature/doacao`, o `index.html` ficou assim. O que está correto?",
+       cd:'<<<<<<< HEAD\n<h1>Pata Amiga: adote um amigo</h1>\n=======\n<h1>Pata Amiga: ajude a alimentar</h1>\n>>>>>>> feature/doacao',
+       o:["Entre `<<<<<<< HEAD` e `=======` está a versão da branch atual, e depois a da `feature/doacao`; é preciso editar, apagar os marcadores e fazer `git add` e `git commit`","O Git escolheu a versão da `main` automaticamente","Basta um `git push` para o GitHub resolver o conflito","Os marcadores são comentários HTML e podem ficar no arquivo","O commit da `feature/doacao` foi perdido e precisa ser refeito"], c:0,
+       e:"Conflito acontece quando as duas branches mudaram a mesma linha. O Git para o merge e marca as duas versões. Quem resolve é a pessoa: escolhe ou combina o texto, remove os marcadores, depois `git add` e `git commit` concluem o merge."},
+      {q:"O site funciona no Windows da equipe, mas uma imagem não carrega no GitHub Pages. O arquivo no repositório é `img/cao.JPG`, e o HTML tem `<img src=\"img/cao.jpg\" alt=\"Cão para adoção\">`. Qual é a causa mais provável?",
+       o:["O servidor diferencia maiúsculas de minúsculas, então `cao.jpg` e `cao.JPG` são arquivos diferentes; o Windows trata os dois como o mesmo","O GitHub Pages não aceita JPG","Imagens só são servidas com um back-end em Node.js","Falta HTTPS no site","Imagens precisam de um banco de dados configurado"], c:0,
+       e:"Servidores Linux, como o do GitHub Pages, são sensíveis a maiúsculas. Uma boa prática é usar nomes de arquivo sempre em minúsculas e sem espaços ou acentos."}
+    ],
+    dis: [
+      {q:"Escreva o JavaScript que valida o formulário de contato da ONG (<code>&lt;form id=\"contato\"&gt;</code>, campos <code>#nome</code> e <code>#email</code>, mensagem em <code>&lt;p id=\"erro\"&gt;</code>). Ele deve impedir o envio se o nome estiver vazio ou se o e-mail não tiver \"@\". Se estiver tudo certo, salva o nome no <code>localStorage</code> e mostra \"Obrigado, NOME!\". Explique as decisões do código.",
+       html:true,
+       a:["Seleciona o formulário e escuta o evento <code>submit</code> com <code>addEventListener</code>.","Lê os campos com <code>value</code> e usa <code>trim()</code> para ignorar espaços.","Testa as duas condições com <code>||</code> (nome vazio <b>ou</b> e-mail sem \"@\", por exemplo com <code>includes(\"@\")</code>).","Chama <code>preventDefault()</code> para não recarregar a página e escreve o retorno com <code>textContent</code>.","Salva com <code>localStorage.setItem</code>, lembrando que ele guarda apenas strings.","Menciona que a validação no navegador não substitui a validação no servidor.",
+          "<pre>const form = document.getElementById(\"contato\");\nconst erro = document.getElementById(\"erro\");\n\nform.addEventListener(\"submit\", (event) => {\n  event.preventDefault();\n  const nome = document.getElementById(\"nome\").value.trim();\n  const email = document.getElementById(\"email\").value.trim();\n\n  if (nome === \"\" || !email.includes(\"@\")) {\n    erro.textContent = \"Preencha o nome e um e-mail válido.\";\n    return;\n  }\n\n  localStorage.setItem(\"nome\", nome);\n  erro.textContent = \"Obrigado, \" + nome + \"!\";\n});</pre>"]},
+      {q:"Descreva o caminho do site da ONG, do código no computador até estar no ar no GitHub Pages, citando os comandos do Git. Depois explique dois problemas comuns que aparecem só em produção e como evitá-los.",
+       html:true,
+       a:["<b>Versionamento:</b> <code>git init</code> (ou <code>git clone</code>), <code>git add</code>, <code>git commit -m</code>.","<b>Remoto:</b> criar o repositório no GitHub, <code>git remote add origin &lt;url&gt;</code> e <code>git push -u origin main</code>.","<b>Deploy:</b> em Settings &gt; Pages, publicar a partir da branch <code>main</code>; o arquivo inicial precisa se chamar <code>index.html</code>.","<b>Problema 1:</b> nomes de arquivo com maiúsculas diferentes (o servidor diferencia) ou caminhos absolutos do computador, como <code>C:\\...</code>. Evitar com caminhos relativos e nomes em minúsculas.","<b>Problema 2:</b> outro problema válido, como recursos carregados por <code>http://</code> numa página <code>https://</code> (conteúdo misto), cache antigo ou arquivo esquecido no commit. Evitar testando o link publicado após cada deploy.","<b>Qualidade:</b> commits pequenos e com mensagens claras, branches para novas funções e revisão antes do merge."]}
+    ]
+  }
+};
+
+const $ = (s) => document.querySelector(s);
+const letters = "ABCDE";
+let current = "facil", answered = 0, correct = 0;
+
+function shuffle(a){ a = a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function el(tag, cls, text){ const e=document.createElement(tag); if(cls) e.className=cls; if(text!==undefined) e.textContent=text; return e; }
+function esc(t){ return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function fmt(t){ return esc(t).replace(/`([^`]+)`/g, "<code>$1</code>"); }
+function rich(tag, cls, t){ const e = el(tag, cls); e.innerHTML = fmt(t); return e; }
+
+function updateScore(total){
+  $("#score").textContent = `Acertos: ${correct} de ${answered} respondidas (${total} no total)`;
+}
+
+function renderSim(id){
+  current = id; answered = 0; correct = 0;
+  const sim = SIMS[id];
+  const box = $("#objetivas"); box.replaceChildren();
+  updateScore(sim.obj.length);
+  sim.obj.forEach((item, qi) => {
+    const card = el("article","q");
+    card.appendChild(el("span","n",`Questão ${qi+1} de ${sim.obj.length}`));
+    card.appendChild(rich("p",null,item.q));
+    if(item.cd) card.appendChild(el("pre",null,item.cd));
+    const opts = el("div","opts");
+    const fb = el("div","fb"); fb.hidden = true;
+    const order = shuffle(item.o.map((t,i)=>({t, ok:i===item.c})));
+    const btns = [];
+    order.forEach((o, oi) => {
+      const b = el("button","opt"); b.type="button";
+      b.appendChild(el("span","l",letters[oi]));
+      b.appendChild(rich("span","t",o.t));
+      b.addEventListener("click", () => {
+        btns.forEach((x,xi)=>{ x.disabled=true; if(order[xi].ok) x.classList.add("ok"); });
+        if(!o.ok) b.classList.add("bad");
+        answered++; if(o.ok) correct++;
+        const exp = rich("span",null,item.e);
+        fb.replaceChildren(el("b",null, o.ok ? "Certo. " : "Não foi essa. "), exp);
+        fb.hidden = false; updateScore(sim.obj.length);
+      });
+      btns.push(b); opts.appendChild(b);
+    });
+    card.appendChild(opts); card.appendChild(fb); box.appendChild(card);
+  });
+  const dbox = $("#diss"); dbox.replaceChildren();
+  sim.dis.forEach((d, di) => {
+    const card = el("article","dis");
+    card.appendChild(el("span","n",`Dissertativa ${di+1}`));
+    const p = el("p"); if(d.html) p.innerHTML = d.q; else p.textContent = d.q; card.appendChild(p);
+    const ta = document.createElement("textarea");
+    ta.id = `resp-${current}-${di}`; ta.rows = 7; ta.placeholder = "Escreva sua resposta aqui antes de ver o gabarito.";
+    ta.setAttribute("aria-label", `Resposta da dissertativa ${di+1}`);
+    card.appendChild(ta);
+    const btn = el("button","btn","Ver gabarito e conferir"); btn.type="button"; btn.style.alignSelf="flex-start";
+    const ans = el("div","ans"); ans.hidden = true;
+    const pts = d.a.filter(h => !h.startsWith("<pre>"));
+    ans.appendChild(el("p","hint","Compare com a sua resposta e marque os pontos que você cobriu."));
+    const list = el("div","chk");
+    const result = el("p","res");
+    const upd = () => { const n = list.querySelectorAll("input:checked").length; result.textContent = `Você cobriu ${n} de ${pts.length} pontos.`; };
+    pts.forEach((h, pi) => {
+      const lab = el("label"); const cb = document.createElement("input"); cb.type="checkbox"; cb.id=`pt-${current}-${di}-${pi}`;
+      cb.addEventListener("change", upd);
+      const span = el("span"); span.innerHTML = h; lab.append(cb, span); list.appendChild(lab);
+    });
+    ans.appendChild(list);
+    const codes = d.a.filter(h => h.startsWith("<pre>"));
+    if(codes.length) ans.appendChild(el("p","hint","Exemplo de resposta (outras soluções corretas também valem):"));
+    codes.forEach(h => ans.appendChild(el("pre",null,h.replace(/<\/?pre>/g,""))));
+    ans.appendChild(result); upd();
+    btn.addEventListener("click", () => { ans.hidden = !ans.hidden; btn.textContent = ans.hidden ? "Ver gabarito e conferir" : "Esconder gabarito"; });
+    card.append(btn, ans); dbox.appendChild(card);
+  });
+  document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", String(t.dataset.id===id)));
+  try{ history.replaceState(null,"","#"+id); }catch(e){}
+}
+
+const tabs = $("#tabs");
+Object.entries(SIMS).forEach(([id, s], i) => {
+  const b = el("button","tab"); b.type="button"; b.dataset.id=id; b.setAttribute("role","tab");
+  b.appendChild(document.createTextNode(`Simulado ${i+1}: ${s.nome}`));
+  b.appendChild(el("small",null,s.desc));
+  b.addEventListener("click", () => { renderSim(id); window.scrollTo({top:0}); });
+  tabs.appendChild(b);
+});
+$("#redo").addEventListener("click", () => { renderSim(current); window.scrollTo({top:0}); });
+window.addEventListener("hashchange", () => { const h=location.hash.slice(1); if(SIMS[h] && h!==current) renderSim(h); });
+renderSim(SIMS[location.hash.slice(1)] ? location.hash.slice(1) : "facil");
+}
+</script>
+
+</body>
+</html>
