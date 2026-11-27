@@ -1,4 +1,12 @@
-# Simulado-Front-End
+<!-- topo:inicio -->
+<p align="center">
+  <img src="./.github/readme/banner.svg" alt="Simulado Front-End — Simulados de Desenvolvimento Front-end para Web, do fácil ao difícil, para estudar para a prova." width="100%"/>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/HTML-0f171d?style=for-the-badge&logo=html5&logoColor=white" alt="HTML"/> <img src="https://img.shields.io/badge/CSS-0f171d?style=for-the-badge&logo=css3&logoColor=white" alt="CSS"/> <img src="https://img.shields.io/badge/JavaScript-0f171d?style=for-the-badge&logo=javascript&logoColor=white" alt="JavaScript"/>
+</p>
+<!-- topo:fim -->
 
 Simulados de Desenvolvimento Front-end para Web para estudar para a prova. Abra o `index.html` no navegador.
 
